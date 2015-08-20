@@ -151,6 +151,7 @@ Game.prototype.addDroppableListener = function() {
 				$('.front:not(".ui-draggable-dragging") .square.shape').attr('data-color', 'clear')
 
     		shapeSquares.each(function(){
+				self.score++;
     			var correspondingX = $(this).data('x') + self.delta[0];
     			var correspondingY = $(this).data('y') + self.delta[1];
     			// change new location to color of shape
