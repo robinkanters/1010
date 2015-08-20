@@ -16,30 +16,38 @@ Game.prototype.init = function(board) {
 
 Game.prototype.doTurn = function() {
 	this.legitMove = false;
-	this.checkForHorLine();
-	this.checkForVertLine();
-	this.board.updateScore(this.score);
+	var linesCleared = this.checkForHorLine();
+	linesCleared += this.checkForVertLine();
 	this.generateShape();
 	this.getStartingCoords();
+
+	this.score += 5*linesCleared*(linesCleared+1);
+	this.board.updateScore(this.score);
 };
 
 Game.prototype.checkForHorLine = function() {
 	var self = this;
+	var linesCleared = 0;
 	for (var i = 0; i < this.board.gameHeight; i++) {
 		var row = $('.square.game[data-y=' + i + ']');
 		if (self.checkCells(row)) {
 			self.clearCells(row);
+			linesCleared++;
 		}
 	}
+	return linesCleared;
 };
 
 Game.prototype.checkForVertLine = function() {
 	var self = this;
+	var linesCleared = 0;
 	$('.the-game .column').each(function() {
 		if (self.checkCells(this.children)) {
 			self.clearCells(this.children);
+			linesCleared++;
 		}
 	})
+	return linesCleared;
 };
 
 Game.prototype.checkCells = function(line) {
@@ -63,7 +71,6 @@ Game.prototype.clearCells = function(line) {
 			$(this).attr("data-color", "grey");
 		});
 	})
-	this.score += 1;
 };
 
 Game.prototype.generateShape = function() {
